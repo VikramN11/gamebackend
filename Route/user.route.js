@@ -7,7 +7,7 @@ const userRouter = express.Router();
 
 
 userRouter.post("/register", async(req, res)=>{
-    const {name, email, password, score} = req.body;
+    const {fname, lname, email, password, score} = req.body;
     try {
       const data = await UserModel.find({email});
       if(data.length>0){
@@ -17,7 +17,7 @@ userRouter.post("/register", async(req, res)=>{
         bcrypt.hash(password, 7, async(err, hash)=>{
             if(err) res.send({"msg":"Wrong Credentials"});
             else{
-                const user = new UserModel({name, email, password:hash, score:0});
+                const user = new UserModel({fname, lname, email, password:hash, score:0});
                 await user.save();
                 res.send(user);
             }
