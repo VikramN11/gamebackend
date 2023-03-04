@@ -7,7 +7,7 @@ const userRouter = express.Router();
 
 
 userRouter.post("/register", async(req, res)=>{
-    const {name, email, password, age} = req.body;
+    const {name, email, password, score} = req.body;
     try {
       const data = await UserModel.find({email});
       if(data.length>0){
@@ -17,7 +17,7 @@ userRouter.post("/register", async(req, res)=>{
         bcrypt.hash(password, 7, async(err, hash)=>{
             if(err) res.send({"msg":"Wrong Credentials"});
             else{
-                const user = new UserModel({name, email, password:hash, age});
+                const user = new UserModel({name, email, password:hash, score:0});
                 await user.save();
                 res.send(user);
             }
@@ -66,17 +66,17 @@ userRouter.post("/login", async(req, res)=>{
 })
 
 
-// userRouter.patch("/update/:id", async (req, res) =>{
-//     try{
-//         const ID = req.params.id;
-//         const payload = req.body;
-//         await UserModel.findByIdAndUpdate({_id:ID}, payload);
-//         res.send("User has been updated");
-//     }
-//     catch(err){
-//         res.send(err.message);
-//     }
-// })
+userRouter.patch("/update/:id", async (req, res) =>{
+    try{
+        const ID = req.params.id;
+        const payload = req.body;
+        await UserModel.findByIdAndUpdate({_id:ID}, payload);
+        res.send({"msg":"User has been updated"});
+    }
+    catch(err){
+        res.send(err.message);
+    }
+})
 
 userRouter.delete("/delete/:id", async (req, res) =>{
     try{
