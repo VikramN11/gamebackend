@@ -5,7 +5,8 @@ const userSchema = mongoose.Schema({
     lname:{type:String, required:true, trim:true},
     email:{type:String, required:true, trim:true},
     password:{type:String, required:true, trim:true},
-    score:{type:Number, required:true}
+    score:{type:Number, required:true},
+    diamonds:{type:Number, required:true}
 })
 
 const UserModel = mongoose.model("user", userSchema);

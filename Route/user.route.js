@@ -7,7 +7,7 @@ const userRouter = express.Router();
 
 
 userRouter.post("/register", async(req, res)=>{
-    const {fname, lname, email, password, score} = req.body;
+    const {fname, lname, email, password, score, diamonds} = req.body;
     try {
       const data = await UserModel.find({email});
       if(data.length>0){
@@ -17,7 +17,7 @@ userRouter.post("/register", async(req, res)=>{
         bcrypt.hash(password, 7, async(err, hash)=>{
             if(err) res.send({"msg":"Wrong Credentials"});
             else{
-                const user = new UserModel({fname, lname, email, password:hash, score:0});
+                const user = new UserModel({fname, lname, email, password:hash, score:0, diamonds:0});
                 await user.save();
                 res.send(user);
             }
@@ -47,8 +47,8 @@ userRouter.post("/login", async(req, res)=>{
         if(data.length>0){
             bcrypt.compare(password, data[0].password, function(err, result) {
                 if(result){
-                    const token = jwt.sign({ userID: data[0]._id}, 'bblooms');
-                    res.send({"msg":"Logon Successful", "token":token, "currentUser":data[0]});
+                    const token = jwt.sign({ userID: data[0]._id}, 'chidiyaudd');
+                    res.send({"msg":"Login Successful", "token":token, "currentUser":data[0]});
                 }
                 else{
                     res.send({"msg":"Something went Wrong"});
