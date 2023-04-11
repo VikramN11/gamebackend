@@ -1,31 +1,29 @@
 const express = require("express");
-const {connection} = require("./configs/db");
-require("dotenv").config();
+require('dotenv').config();
+const {connection} = require("./db");
+const {travelRouter} = require("./router/Traveller.router")
+
+
 const cors = require("cors");
-const { userRouter } = require("./Route/user.route");
-const { adminuserRouter } = require("./Route/adminuser.route");
-const { authentication } = require("./Middleware/authenticate.middleware");
 
 const app = express();
+
 
 app.use(express.json());
 app.use(cors({origin:"*"}));
 
-app.get("/", (req, res) =>{
-    res.send("Welcome to my game");
+app.get("/", (req,res)=>{
+    res.send("Home page");
 })
 
-app.use("/adminusers", adminuserRouter)
-app.use("/users", userRouter);
+app.use("/travel", travelRouter);
 
-app.use(authentication);
-
-
-app.listen(process.env.port, async()=>{
+app.listen(process.env.PORT, async()=>{
     try {
-        console.log("Connected to DB");
+        await connection;
+        console.log("Connected to DB")
     } catch (err) {
-        console.log(err.message)
+        console.log(err.message);
     }
-    console.log("Server is running on port 6060");
+    console.log(`Server is running on port ${process.env.PORT}`);
 })
